@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+        }
+
+        .container {
+            position: relative;
+            padding: 0 20px;
+            padding-bottom: 3rem;
+        }
+
+        .inner-container {
+            height: fit-content;
+            width: 100%;
+            /* background-color: gray; */
+            max-width: 700px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 0;
+        }
+
+        .logo {
+            width: 150px;
+            margin-bottom: 1rem;
+        }
+
+        .logo.logo--small {
+            height: 1.25rem;
+            width: auto;
+            filter: invert(1);
+            margin-bottom: 0;
+        }
+
+        .text-centered {
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            width: 100%;
+            padding: 0 2rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .uppercase-text {
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin: 0;
+            font-size: 12px;
+        }
+
+        .date {
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: -0.04rem;
+            margin: 0;
+        }
+
+        .dashed-container {
+            display: flex;
+            flex-direction: row;
+            gap: 3rem;
+            padding: 1.5rem 0 1.4rem 0;
+            align-items: center;
+            width: 100%;
+            border: 1px dashed rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            margin: 4rem 0;
+        }
+
+        .pair {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pair.pair--left-align {
+            align-items: flex-start;
+        }
+
+        .qr-code {
+            height: 120px;
+            width: 120px;
+            object-fit: cover;
+            margin: -0.9rem;
+            margin-right: -0.6rem;
+            mix-blend-mode: darken;
+        }
+
+        .bold-text {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        .card {
+            width: 100%;
+            min-height: 300px;
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 1.5rem 2.4rem 1.5rem 1.5rem;
+            gap: 3rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .col {
+            display: flex;
+            flex-direction: column;
+            gap: 2.25rem;
+        }
+
+        .row {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+        }
+
+        .stripe {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3rem;
+            width: 100%;
+            background-color: #00d057;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hint {
+            opacity: 0.7;
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .triangles-line {
+            height: 1rem;
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-position: bottom;
+            background-repeat: repeat;
+            background-size: contain;
+        }
+
+        .huge-num {
+            font-size: 2rem;
+            font-weight: 500;
+            margin: 0 -2px;
+        }
+
+        .top-separated {
+            margin-top: 1.5rem;
+        }
+
+        .checkmark{
+            height: 1.25rem;
+            width: 1.25rem;
+            background-size: contain;
+            background-position: center;
+        }
+
+        .status-box{
+            gap: 0.75rem;
+            align-items: center;
+            position: absolute;
+            bottom: 2rem;
+            left: 1.5rem;
+        }
+
+        .status-box.status-box--status-success p{
+            color: #00d057;
+            text-transform: uppercase;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        @media screen and (max-width: 600px) {
+            .mobile-adaptive{
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner-container">
+            <img class="logo" th:src="${logoBase64}" alt="doublefour" />
+            <p class="text-centered">Благодарим Вас за&nbsp;бронирование на&nbsp;doublefour!<br />Мы передали информацию
+                о&nbsp;бронировании владельцу жилья</p>
+            <h1 class="title" th:text="${booking.listing}">Апартаменты на Приморском проспекте</h1>
+            <div class="dashed-container">
+                <div class="pair">
+                    <p class="uppercase-text">Дата заезда</p>
+                    <p class="date" th:text="${formattedStartDate}">10 июня 2025 г.</p>
+                </div>
+                <div class="pair">
+                    <p class="uppercase-text">Дата выезда</p>
+                    <p class="date" th:text="${formattedEndDate}">15 июня 2025 г.</p>
+                </div>
+            </div>
+            <div class="row mobile-adaptive">
+                <div class="card">
+                    <div class="row">
+                        <img class="qr-code" th:src="'data:image/png;base64,' + ${qrCode}" alt="QR Code" />
+                        <p class="hint">Владелец жилья может попросить показать Вас данный QR-код</p>
+                    </div>
+                    <div class="col">
+                        <div class="pair pair--left-align">
+                            <p class="uppercase-text">Адрес бронирования</p>
+                            <p class="bold-text" th:text="${booking.address}">Санкт-Петербург, Приморский пр-т, 78к2</p>
+                        </div>
+                        <div class="pair pair--left-align">
+                            <p class="uppercase-text">Код бронирования</p>
+                            <p class="bold-text" th:text="${id}">1249023-2432343-2342344</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div th:style="'background-image: url(' + ${triangleBase64} + ');'" class="triangles-line"></div>
+                    <div class="col">
+                        <div class="pair pair--left-align">
+                            <p class="uppercase-text">Полная стоимость</p>
+                            <p class="bold-text huge-num"><span th:text="${booking.totalPrice}">14550</span><span>
+                                    ₽</span></p>
+                        </div>
+
+                        <div class="row status-box status-box--status-success">
+                            <div th:style="'background-image: url(' + ${checkmarkBase64} + ');'" class="checkmark">
+                            </div>
+                            <p class="status-text">Оплачено</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="text-centered">Если у&nbsp;Вас возникнут вопросы по&nbsp;бронированию — свяжитесь
+                с&nbsp;владельцем жилья или&nbsp;службой технической поддержки doublefour</p>
+
+            <p class="text-centered hint top-separated">Данное сообщение отправлено автоматически, отвечать на&nbsp;него
+                не&nbsp;нужно
+            </p>
+        </div>
+        <div class="stripe">
+            <img class="logo logo--small" th:src="${logoBase64}" alt="doublefour" />
+        </div>
+    </div>
+</body>
+
+</html>
