@@ -1,41 +1,27 @@
 spring:
   application:
-    name: blps1
+    name: blpsreports
 
-  datasource:
-    url: ${LOCAL_DATASOURCE_URL}
-    username: ${LOCAL_DATASOURCE_USERNAME}
-    password: ${LOCAL_DATASOURCE_PASSWORD}
-    driverClassName: org.postgresql.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-
-  jta:
-    enabled: true
-    atomikos:
+  kafka:
+    admin:
       properties:
-        enable-logging: true
-        transaction-timeout: 300
-
-  mail:
-    host: ${MAIL_HOST}
-    port: ${MAIL_PORT}
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
-    properties:
-      mail:
-        debug: false
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-
-security:
-  token: ${SECURITY_KEY}
-  expiration-time-ms: 172800000
+        offsets.topic.replication.factor: 1
+        transaction.state.log.replication.factor: 1
+        transaction.state.log.min.isr: 1
+    bootstrapServers:
+      - localhost:9092
+    topics:
+      digest-report:
+        name: "digest-report"
+        partitions: 1
+        replication-factor: 1
+      booking-report:
+        name: "booking-report"
+        partitions: 1
+        replication-factor: 1
+      email-sender:
+        name: "email-sender"
+        partitions: 1
+        replication-factor: 1
+server:
+  port: 8081
